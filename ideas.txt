@@ -1,0 +1,3 @@
+zasady:
+1. tylko małe litery i cyfry, brak polskich znakow, nazwy dwuczłonowe pisane razem (brak spacji)
+2. pytania w petli, wskaźnik postępu
