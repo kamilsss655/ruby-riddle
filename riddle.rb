@@ -1,36 +1,76 @@
+#########################
+# -- Simple riddle --   #
+# Author: Kamil Cyrkler #
+# Date: 3rd Jan 2016    #
+#########################
+
+require 'digest'
+require 'encryptor'
+require 'base64'
+
 class Riddle
 
-    def initialize()
+    def initialize
+        # Declare initial level progress
         @progress = 0
+        # Add salt to prevent rainbow table cracking
+        @salt = '$10$HuZkq5drrxh9NDFQ7LHQvufYXoGAacAFYcTFvu6VsKq7ic'
+        # Encrypted level data
         @levels = [
-            ['asdadsadaa0x', 'aaaaaaaaaaaaaaa0x'],
-            ['asdadsadaa1x', 'aaaaaaaaaaaaaaa1x'],
-            ['asdadsadaa2x', 'aaaaaaaaaaaaaaa3x'],
-            ['asdadsadaa4x', 'aaaaaaaaaaaaaaa4x'],
-            ['asdadsadaa5x', 'aaaaaaaaaaaaaaa5x']
+            ['ZiNPWa/8zLpg8s5aYgBg4nEeUaaSCOoDJQyRO38X4jw=', 'aaaaaaaaaaaaaaa0x'],
+            ['UsqLlg6JTR0MyKK/EWFZXycfbbDB9hg3BucwovIFRZQ=', 'aaaaaaaaaaaaaaa1x'],
+            ['UsqLlg6JTR0MyKK/EWFZXycfbbDB9hg3BucwovIFRZQ=', 'aaaaaaaaaaaaaaa3x'],
+            ['UsqLlg6JTR0MyKK/EWFZXycfbbDB9hg3BucwovIFRZQ=', 'aaaaaaaaaaaaaaa4x'],
+            ['UsqLlg6JTR0MyKK/EWFZXycfbbDB9hg3BucwovIFRZQ=', 'aaaaaaaaaaaaaaa5x']
         ]
-        main()
+            # ['answer1', 'aaaaaaaaaaaaaaa0x'],
+            # ['answer2', 'aaaaaaaaaaaaaaa1x'],
+            # ['answer2', 'aaaaaaaaaaaaaaa3x'],
+            # ['answer2', 'aaaaaaaaaaaaaaa4x'],
+            # ['answer2', 'aaaaaaaaaaaaaaa5x']
+        # Initialize main method
+        main
     end
 
     def check(answer)
-        hash = @levels[@progress][0]
-        encypted_text = @levels[@progress][1]
-        return hash+encypted_text
+        current_hash = @levels[@progress][0]
+        if create_hash(answer) == current_hash
+            @progress+=1
+            puts '', 'Correct anwswer! Moving on to challenge number '+@progress.to_s, ''
+        else
+            puts '', 'Sorry, this answer is not correct. Please try again', '' 
+        end
+        # hash = Base64.encode64(Encryptor.encrypt(:value => hash, :key => @salt))
+        # encypted_text = @levels[@progress][1]
+        # puts hash
     end
 
-    def main()
+    def create_hash(input)
+        return Digest::SHA256.base64digest(input+@salt)
+    end
+
+    def decrypt(input)
+
+    end
+
+    def main
+        welcome
         while @progress < @levels.count
-            get_input()
-            @progress+=1
+            check(input)
         end
     end
 
-    def get_input()
-        puts 'Hello, welcome to the Riddle!'
-        @input = gets.strip
-        puts @input
-        puts check(2)
+    def welcome
+        puts 'Welcome to the Riddle Challenge.'
+        puts 'You will be presented with a series of riddles, to begin type answer1 and press Enter.', ''
     end
 
-Riddle.new()
+    def input
+        puts 'Your answer is:', ''
+        return gets.strip
+    end
+
 end
+
+Riddle.new
+
