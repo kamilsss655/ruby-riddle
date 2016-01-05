@@ -13,15 +13,17 @@ class Riddle
     def initialize
         # Declare initial level progress
         @progress = 0
+        # Default password for the introduction level
+        @pass = 'first'
         # Add salt to prevent rainbow table cracking
         @salt = '$10$HuZkq5drrxh9NDFQ7LHQvufYXoGAacAFYcTFvu6VsKq7ic'
         # Encrypted level data
         @levels = [
-            ['ZiNPWa/8zLpg8s5aYgBg4nEeUaaSCOoDJQyRO38X4jw=','jKx/k+OIXoNmJm/5+Ln3E1fkciyMSKz0rq8SCGHGfpteAxN7jiU2gvqZSL4S6gM0'],
-            ['UsqLlg6JTR0MyKK/EWFZXycfbbDB9hg3BucwovIFRZQ=','HOh7Bb/VjpByDXbGT9uUo8DUvi7pokStHE5TTXh/TFVzAhNoKErJjwJv4Zwm65OW'],
-            ['g3MA5mzLcFclNvy2i9ZjHYOWFbJcmKOvTzqwUtHnqaw=','VFwa6CqAe9+ccwjKkoSaHxQw+1Jx59GPkmI6Eo3ZmLTIUPt6g9VQQfnzz29i46rb'],
-            ['RfhWogfQh1X+AI17hvQWxXy+O4lHddMMrtWxL0FCoXQ=','mbVQ+D/RWEghptY9NTW9YM86QSwj3Lutwfo6l9qxuhvcbgwaImFeldKNaFJWQmFo'],
-            ['RfhWogfQh1X+AI17hvQWxXy+O4lHddMMrtWxL0FCoXQ=','mbVQ+D/RWEghptY9NTW9YM86QSwj3Lutwfo6l9qxuhsWfHwJC/OiToZIflR+EmlX']
+            ['z8OiA6mWq0LZ+PIzXW1VfTZqtLpYCKYC+m0qR/7yNRI=','mEHk3VcGA89+gb71hmPIxENes4d2kjxtcsNDHkuRya0dk6prbqT207oTgL82kHJwxT1oYnmhAY9GMe0743gcsiVCYX1eFXwSPuXPB2gqB7U='],
+            ['9VhkLR30To517OK3hiZpQAmTWNTVQgfmBQVvNrNJuNw=','ZVZZqxsmrg30f9vDXqeBw/AAZ/kgEHCJ+Ot6ikGbdqvUnOwOQ4DwHUytd2hNIBYcd082a25/VnjsG6fvSpLzOw=='],
+            ['ZiNPWa/8zLpg8s5aYgBg4nEeUaaSCOoDJQyRO38X4jw=','fWSk1ZWyICLKwQPLM1eqSc8uIq0MU+f8SuuPhVDima9tZHRAs+WoaZ7gRNFXJquG'],
+            ['RfhWogfQh1X+AI17hvQWxXy+O4lHddMMrtWxL0FCoXQ=','mbVQ+D/RWEghptY9NTW9YM86QSwj3Lutwfo6l9qxuhuB5ye/uhMGWUGrAv5pv4c3'],
+            ['KAEYiyKf8ja4jvvOH96tEEAvHjRTDtzEWmze2glswV0=','7D7SR+t4EwUg/EsV2eLsmTlIcRAVC5s8F1esNPFYA14=']
         ]
         # Initialize main method
         main
@@ -30,8 +32,10 @@ class Riddle
     def check(answer)
         current_hash = @levels[@progress][0]
         if create_hash(answer) == current_hash
-            puts '', decrypt(@levels[@progress][1], answer) , ''
-            @progress+=1       
+            text = decrypt(@levels[@progress][1], answer)
+            puts '', "Correct! Questions remaining: #{@levels.count-@progress-1}", '' if @progress!=0
+            puts '', text , ''
+            @progress+=1      
         else
             puts '', 'Sorry, this answer is not correct. Please try again', '' 
         end
@@ -50,15 +54,15 @@ class Riddle
     end
 
     def main
-        welcome
-        while @progress < @levels.count
-            check(input)
+        # Loop through levels
+        while @progress < @levels.count    
+            # Autodecrypt first introductory level
+            if @progress == 0
+                check(@pass)
+            else        
+                check(input)
+            end
         end
-    end
-
-    def welcome
-        puts 'Welcome to the Riddle Challenge.'
-        puts 'You will be presented with a series of riddles, to begin type answer1 and press Enter.', ''
     end
 
     def input

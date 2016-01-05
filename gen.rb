@@ -13,13 +13,15 @@ class Riddle
     def initialize
         # Add salt to prevent rainbow table cracking
         @salt = '$10$HuZkq5drrxh9NDFQ7LHQvufYXoGAacAFYcTFvu6VsKq7ic'
+         # Default password for the introduction level
+        @pass = 'first'
         # Level data to be encrypted
         @levels = [
-            ['answer1', 'Hello, to proceed please write answer1'],
-            ['answer2', 'Nice, to proceed please write answer2'],
-            ['answer3', 'Nice, to proceed please write answer3'],
-            ['answer4', 'Nice, to proceed please write answer4'],
-            ['answer4', 'Nice, to proceed please write answer5s']
+            [@pass, "Welcome to the Riddle Challenge, to begin please write 'start' and press ENTER."],
+            ['start', 'Here is the first question please answer1 to proceed.'],
+            ['answer1', 'Nice, to proceed please write answer4'],
+            ['answer4', 'Nice, to proceed please write answer5'],
+            ['answer5', 'This is it, you have done it.']
         ]
         # Initialize generate method
         generate
