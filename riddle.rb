@@ -17,17 +17,12 @@ class Riddle
         @salt = '$10$HuZkq5drrxh9NDFQ7LHQvufYXoGAacAFYcTFvu6VsKq7ic'
         # Encrypted level data
         @levels = [
-            ['ZiNPWa/8zLpg8s5aYgBg4nEeUaaSCOoDJQyRO38X4jw=', 'aaaaaaaaaaaaaaa0x'],
-            ['UsqLlg6JTR0MyKK/EWFZXycfbbDB9hg3BucwovIFRZQ=', 'aaaaaaaaaaaaaaa1x'],
-            ['UsqLlg6JTR0MyKK/EWFZXycfbbDB9hg3BucwovIFRZQ=', 'aaaaaaaaaaaaaaa3x'],
-            ['UsqLlg6JTR0MyKK/EWFZXycfbbDB9hg3BucwovIFRZQ=', 'aaaaaaaaaaaaaaa4x'],
-            ['UsqLlg6JTR0MyKK/EWFZXycfbbDB9hg3BucwovIFRZQ=', 'aaaaaaaaaaaaaaa5x']
+            ['ZiNPWa/8zLpg8s5aYgBg4nEeUaaSCOoDJQyRO38X4jw=','jKx/k+OIXoNmJm/5+Ln3E1fkciyMSKz0rq8SCGHGfpteAxN7jiU2gvqZSL4S6gM0'],
+            ['UsqLlg6JTR0MyKK/EWFZXycfbbDB9hg3BucwovIFRZQ=','HOh7Bb/VjpByDXbGT9uUo8DUvi7pokStHE5TTXh/TFVzAhNoKErJjwJv4Zwm65OW'],
+            ['g3MA5mzLcFclNvy2i9ZjHYOWFbJcmKOvTzqwUtHnqaw=','VFwa6CqAe9+ccwjKkoSaHxQw+1Jx59GPkmI6Eo3ZmLTIUPt6g9VQQfnzz29i46rb'],
+            ['RfhWogfQh1X+AI17hvQWxXy+O4lHddMMrtWxL0FCoXQ=','mbVQ+D/RWEghptY9NTW9YM86QSwj3Lutwfo6l9qxuhvcbgwaImFeldKNaFJWQmFo'],
+            ['RfhWogfQh1X+AI17hvQWxXy+O4lHddMMrtWxL0FCoXQ=','mbVQ+D/RWEghptY9NTW9YM86QSwj3Lutwfo6l9qxuhsWfHwJC/OiToZIflR+EmlX']
         ]
-            # ['answer1', 'aaaaaaaaaaaaaaa0x'],
-            # ['answer2', 'aaaaaaaaaaaaaaa1x'],
-            # ['answer2', 'aaaaaaaaaaaaaaa3x'],
-            # ['answer2', 'aaaaaaaaaaaaaaa4x'],
-            # ['answer2', 'aaaaaaaaaaaaaaa5x']
         # Initialize main method
         main
     end
@@ -35,22 +30,23 @@ class Riddle
     def check(answer)
         current_hash = @levels[@progress][0]
         if create_hash(answer) == current_hash
-            @progress+=1
-            puts '', 'Correct anwswer! Moving on to challenge number '+@progress.to_s, ''
+            puts '', decrypt(@levels[@progress][1], answer) , ''
+            @progress+=1       
         else
             puts '', 'Sorry, this answer is not correct. Please try again', '' 
         end
-        # hash = Base64.encode64(Encryptor.encrypt(:value => hash, :key => @salt))
-        # encypted_text = @levels[@progress][1]
-        # puts hash
     end
 
-    def create_hash(input)
+   def create_hash(input)
         return Digest::SHA256.base64digest(input+@salt)
     end
 
-    def decrypt(input)
+    def decrypt(input, key)
+        return Encryptor.decrypt(:value => Base64.decode64(input), :algorithm => 'aes-128-cbc', :key => Digest::SHA256.base64digest(key), :salt => @salt)
+    end
 
+    def encrypt(input, key)
+        return Base64.encode64(Encryptor.encrypt(:value => input, :algorithm => 'aes-128-cbc', :key => Digest::SHA256.base64digest(key), :salt => @salt))
     end
 
     def main
