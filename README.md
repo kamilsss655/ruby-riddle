@@ -6,9 +6,9 @@ This let's you create challenges for use in IT recruitment, Hackathons and other
 This Ruby script sets up series of questions (challenges) that are encrypted with the key that is the answer to the previous question (first introduction challenge is autodecrypted). This means that user can only progress in solving the challenge by knowing the answers to the questions - or crack answer hash (which is not so easy).
 
 ##Idea
-The idea is that you generate encrypted dataset for the challenge using gen.rb.
-Then you modify @levels array in riddle.rb
-You share riddle.rb and Gemfile with the person who is challenged by you.
+* You generate encrypted dataset (answer, question) for the challenge using gen.rb.
+* Then you modify @levels array in riddle.rb
+* You share riddle.rb and Gemfile with the person who is challenged by you.
 
 ##Requirements:
 * Ruby 2.2.3 (or newer)
