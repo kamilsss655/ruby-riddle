@@ -47,10 +47,6 @@ class Riddle
         return Encryptor.decrypt(:value => Base64.decode64(input), :algorithm => 'aes-128-cbc', :key => Digest::SHA256.base64digest(key), :salt => @salt)
     end
 
-    def encrypt(input, key)
-        return Base64.encode64(Encryptor.encrypt(:value => input, :algorithm => 'aes-128-cbc', :key => Digest::SHA256.base64digest(key), :salt => @salt))
-    end
-
     def main
         # Loop through levels
         while @progress < @levels.count    
