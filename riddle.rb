@@ -25,8 +25,6 @@ class Riddle
             ['RfhWogfQh1X+AI17hvQWxXy+O4lHddMMrtWxL0FCoXQ=','mbVQ+D/RWEghptY9NTW9YM86QSwj3Lutwfo6l9qxuhuB5ye/uhMGWUGrAv5pv4c3'],
             ['KAEYiyKf8ja4jvvOH96tEEAvHjRTDtzEWmze2glswV0=','7D7SR+t4EwUg/EsV2eLsmTlIcRAVC5s8F1esNPFYA14=']
         ]
-        # Initialize main method
-        main
     end
 
     def check(answer)
@@ -41,7 +39,7 @@ class Riddle
         end
     end
 
-   def create_hash(input)
+    def create_hash(input)
         return Digest::SHA256.base64digest(input+@salt)
     end
 
@@ -72,5 +70,5 @@ class Riddle
 
 end
 
-Riddle.new
+Riddle.new.main
 

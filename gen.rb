@@ -23,8 +23,6 @@ class Riddle
             ['answer4', 'Nice, to proceed please write answer5'],
             ['answer5', 'This is it, you have done it.']
         ]
-        # Initialize generate method
-        generate
     end
 
     def generate
@@ -48,4 +46,4 @@ class Riddle
 
 end
 
-Riddle.new
+Riddle.new.generate
